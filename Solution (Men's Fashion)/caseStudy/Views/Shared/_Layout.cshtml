@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@("MFashion - " + ViewBag.Title)</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @using caseStudy.Controllers;
+</head>
+<body>
+    <div class="background">
+        <div class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="top-header">
+                        @* logo - home *@
+                        <a href="@Url.Action("Index", "Home")">
+                            <img class="nav-logo" src="~/Images/mensfashion-logo.png" alt="Men's Fashion logo">
+                        </a>
+                        <form class="search-form" method="GET" action="/Product/ProductsBySearch">
+                            <input class="search-bar" type='text' name="search" placeholder="Enter search keywords here">
+                            <input class="search-btn" type="submit" value="Search">
+                        </form>
+
+                        @* Login/register - wishlist *@
+                        <div class="account-buttons">
+                            <a href="@Url.Action("Cart", "Home")">
+                                <img class="shopping-cart" src="~/Images/shopping-basket.jpg" alt="shopping-cart">
+                            </a>
+                            @* Check number of items in cart *@
+                            @if (Session["cart"] == null)
+                            {
+                                Session["cartItems"] = 0;
+                            }
+                            else
+                            {
+                                List<Item> cart = (List<Item>)Session["cart"];
+                                Session["cartItems"] = cart.Count;
+                            }
+                            Now in your cart @Html.ActionLink(@Session["cartItems"] + " items", "Cart", "ShoppingCart")
+                        </div>
+                    </div>
+                    <div class="bottom-header">
+                        <div class="dropdown navbar-left">
+                            <button id="dropdown-tgl" class="btn btn-primary dropdown-toggle" type="button" onclick="tgl()">
+                                SHOP BY CATEGORY
+                                <span class="caret"></span>
+                            </button>
+                        </div>
+                        <ul class="nav navbar-nav page-buttons">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="container body-content">
+            <div class="wrapper">
+                @* dropdown list *@
+                <div class="left-col">
+                    <ul class="dd-div">
+                        <li class="dropdown-cell bullet"><a id="li-tops" class="bullet">TOPS</a></li>
+                        <ul>
+                            <li class="dropdown-cell">@Html.ActionLink("Dress Shirts", "ProductByCatId", "Product", new { catId = 1 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Casual Button-Down Shirts", "ProductByCatId", "Product", new { catId = 2 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Polo Shirts", "ProductByCatId", "Product", new { catId = 3 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("T-Shirts", "ProductByCatId", "Product", new { catId = 4 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Sweaters", "ProductByCatId", "Product", new { catId = 5 }, null)</li>
+                        </ul>
+                        <li class="dropdown-cell"><a id="li-Bottoms" class="bullet" href="#">BOTTOMS</a></li>
+                        <ul>
+                            <li class="dropdown-cell">@Html.ActionLink("Pants", "ProductByCatId", "Product", new { catId = 6 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Jeans", "ProductByCatId", "Product", new { catId = 7 }, null)</li>
+                        </ul>
+                        <li class="dropdown-cell"><a id="li-work" class="bullet" href="#">WORK & FORMAL</a></li>
+                        <ul>
+                            <li class="dropdown-cell">@Html.ActionLink("Business Casual", "ProductByCatId", "Product", new { catId = 8 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Modern Workwear", "ProductByCatId", "Product", new { catId = 9 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Sportcoats & Blazers", "ProductByCatId", "Product", new { catId = 10 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Suits", "ProductByCatId", "Product", new { catId = 11 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Weddings", "ProductByCatId", "Product", new { catId = 12 }, null)</li>
+                        </ul>
+                        <li class="dropdown-cell"><a id="li-acc" class="bullet" href="#">Accessories</a></li>
+                        <ul>
+                            <li class="dropdown-cell">@Html.ActionLink("Ties", "ProductByCatId", "Product", new { catId = 13 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Belts", "ProductByCatId", "Product", new { catId = 14 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Wallets", "ProductByCatId", "Product", new { catId = 15 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Underwear", "ProductByCatId", "Product", new { catId = 16 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Socks", "ProductByCatId", "Product", new { catId = 17 }, null)</li>
+                        </ul>
+                        <li class="dropdown-cell"><a id="li-shoes" class="bullet" href="#">SHOES</a></li>
+                        <ul>
+                            <li class="dropdown-cell">@Html.ActionLink("All Men's Shoes", "ProductByCatId", "Product", new { catId = 18 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Active & Outdoor", "ProductByCatId", "Product", new { catId = 19 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Boots", "ProductByCatId", "Product", new { catId = 20 }, null)</li>
+                            <li class="dropdown-cell">@Html.ActionLink("Loafers & Slip-ons", "ProductByCatId", "Product", new { catId = 21 }, null)</li>
+                        </ul>
+                    </ul>
+                    @{ Html.RenderAction("RenderSpecials", "Product"); }
+
+                </div>
+                @RenderBody()
+            </div>
+            <div class="clearfix"></div>
+            <hr />
+            <footer>
+                <p>
+                    <a>Home</a>
+                    <a>New products</a>
+                    <a>Specials</a>
+                    <a>All products</a>
+                    <a>Reviews</a>
+                    <a>Contacts</a>
+                    <a>FAQs</a>
+                </p>
+            </footer>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

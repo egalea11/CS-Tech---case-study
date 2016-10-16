@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using caseStudy.Controllers;
+<div class="right-col">
+
+    @{ double total = 0; }
+
+    <div class="product-box">
+        <h4>Your Shopping Cart Contents</h4>
+        @using (Html.BeginForm("Cart", "ShoppingCart", FormMethod.Post))
+        {
+            <table cellpadding="2" cellspacing="2" border="1">
+                <tr>
+                    <th>Quantity</th>
+                    <th>Refresh</th>
+                    <th>Item Name</th>
+                    <th>Unit</th>
+                    <th>Sub-Total</th>
+                    <th>Delete</th>
+                </tr>
+                @if (Session["cart"] != null)
+                {
+
+                    foreach (var item in (List<Item>)Session["cart"])
+                    {
+                        <tr>
+                            @* Quantity *@
+                            <td><input class="cart-qt" type="number" value="@item.Quantity" disabled /></td>
+                            @* Refresh *@
+                            <td>
+                                <a href="@Url.Action("RefreshCart", "ShoppingCart")">
+                                    <img class="cart-refresh-btn" src="~/Images/refresh.png" alt="Refresh Page">
+                                </a>
+                            </td>
+                            @* Item Name *@
+                            <td>
+                                <div class="cart-img">
+                                    <p class="cart-desc">@item.Pr.Name</p>
+                                    <img class="tb-img" src="@Url.Content(@item.Pr.ImageLocation)" />
+                                </div>
+                            </td>
+                            @* Unit *@
+                            <td>
+                                <h5 class="cart-price cart-unit"> $@item.Pr.Price</h5>
+                            </td>
+                            @* Sub-Total *@
+                            <td>
+                                <h5 class="tb-price cart-price cart-subtotal"> $@(item.Pr.Price * item.Quantity)</h5>
+                                <div style="visibility: hidden">
+                                    @(total += item.Pr.Price * item.Quantity)
+                                </div>
+                            </td>
+                            @* Delete *@
+                            <td>
+                                <input clas="cart-delete" type="checkbox" name="productId" value="@item.Pr.ProductId" />
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </table>
+
+            @*// Total*@
+
+            @*// Delete checked*@
+            <div class="cart-all">
+                <div class="cart-total-price">
+                    <span>Total:</span>
+                    <h5 class="f-price cart-total-price"> $@total</h5>
+                </div>
+                <div class="cart-refresh-delete">
+                    <a href="@Url.Action("RefreshCart", "ShoppingCart")">
+                        <img class="cart-refresh-btn" src="~/Images/refresh.png" alt="Refresh Page">
+                    </a>
+                    <input class="cart-delete-all" type="submit" value="delete" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

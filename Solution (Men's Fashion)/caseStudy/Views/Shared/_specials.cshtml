@@ -1,0 +1,22 @@
+﻿
+@model IEnumerable<caseStudy.Models.Product>
+
+<div class="specials">
+    <h4>Specials</h4>
+    @foreach (var p in Model)
+    {
+
+        <div class="specials-cell">
+            <img class="specials-img" src="@Url.Content(@p.ImageLocation)" />
+            <div class="specials-text">
+                <h5> @p.Name</h5>
+                <h5 class="was-price"> €@p.Price </h5>
+                @{ 
+                    double tempPrice = p.Price*0.7;
+                    tempPrice = Math.Ceiling(tempPrice);
+                }
+                <h5 class="now-price"> €@tempPrice</h5>
+            </div>
+        </div>
+    }
+</div>

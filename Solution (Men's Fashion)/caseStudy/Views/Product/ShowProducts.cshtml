@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using caseStudy.Models;
+
+<div class="right-col">
+    <div class="product-box">
+        <h4>All Products</h4>
+        <div class="product-desc">
+            <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. </p>
+        </div>
+        <table cellpadding="2" cellspacing="2" border="1">
+            <tr>
+                <th>Product Image</th>
+                <th>Item Name</th>
+                <th>Price</th>
+            </tr>
+            @foreach (Product p in ViewBag.listProducts)
+            {
+                <tr>
+                    <td>
+                        <img class="tb-img" src="@Url.Content(p.ImageLocation)" />
+                    </td>
+                    <td class="tb-desc">
+                        <h3>@p.Name</h3>
+                        <h5>@p.Details</h5>
+                    </td>
+                    <td class="tb-price">
+                        <h5 class="now-price">$@p.Price</h5>
+                        <span>Add:</span>
+
+                        <form method="GET" action="/ShoppingCart/addToCart">
+                            <input type='hidden' name="id" value='@p.ProductId'>
+                            <input type='number' name="qty" min="1" value="1">
+                            <input class="prd-add" type="submit" value="Add to Cart">
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

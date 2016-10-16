@@ -1,0 +1,16 @@
+﻿
+@model IEnumerable<caseStudy.Models.Product>
+
+<div class="featured">
+    <h4>Featured</h4>
+    @foreach (var p in Model)
+    {
+        <div class="featured-cell">
+            <img class="featured-img" src="@Url.Content(@p.ImageLocation)" />
+            <div class="featured-text">
+                <div class="f-name"> @p.Name</div>
+                <div class="f-price"> €@p.Price </div>
+            </div>
+        </div>
+    }
+</div>

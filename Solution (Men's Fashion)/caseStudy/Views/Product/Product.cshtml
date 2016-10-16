@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = Model.Category.CategoryName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using caseStudy.Models>
+@model caseStudy.ViewModels.CategoryProducts
+
+<div class="right-col">
+    <div class="prd-group-box">
+        <h4>@ViewBag.Title</h4>
+
+        @foreach (Product item in Model.Products)
+        {
+            <div class="prd-box">
+                <img class="prd-img" src="@Url.Content(@item.ImageLocation)" />
+                <div class="prd-item">
+
+                    <h5 class="prd-name">@item.Name</h5>
+
+                    <h5 class="prd-price">$@item.Price</h5>
+
+                    <form method="GET" action="/ShoppingCart/addToCart">
+
+                    <span style="font-weight:bold;">Add to Cart: </span>
+                        <input type='text' name="id" value='@item.ProductId' hidden="hidden">
+                        <input class="prd-input" type='number' name="qty" min="1" value="1">
+                        <input class="prd-add" type="submit" value="Add to Cart">
+
+                    </form>
+
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="prd-details">
+                    <span style="font-weight:bold;">Details</span>
+                    <p class="prd-desc">@item.Details</p>
+                </div>
+            </div>
+
+        }
+
+
+    </div>
+</div>
